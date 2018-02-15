@@ -11,7 +11,6 @@ var inputs = process.argv.slice(2);
 var roleInput = inputs[0];
 var dataInput = inputs[1];
 
-
 	switch(roleInput) {
 	case "my-tweets":
 		getTweets();
@@ -88,13 +87,13 @@ var dataInput = inputs[1];
 
 	function getMovies() {
 
+    if (!dataInput) {
+			dataInput = "mr nobody";
+		}
+
 request("http://www.omdbapi.com/?t=" + dataInput + "&y=&plot=short&apikey=40e9cece", function(error, response, body) {
 
     if (!error && response.statusCode === 200) {
-
-     if (!dataInput) {
-			dataInput = "mr nobody";
-		}
 
 	    console.log("dataInput:" + dataInput);
         console.log("Title: " + JSON.parse(body).Title);
