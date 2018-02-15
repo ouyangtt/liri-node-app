@@ -1,12 +1,8 @@
 var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
-// var spotify = require('spotify');
 var request = require('request');
 var inquirer = require('inquirer');
 var fs = require('fs');
-var colors = require('colors');
-
-
 
 var APIKey = require("./keys.js");
 
@@ -18,21 +14,22 @@ var dataInput = inputs[1];
 
 	switch(roleInput) {
 	case "my-tweets":
-	getTweets();
+		getTweets();
 	break;
 	case "spotify-this-song":
-	for (i = 2; i < inputs.length; i++) {
-		dataInput = dataInput + " " + inputs[i];
-	}
-	getSongs();
+			for (i = 2; i < inputs.length; i++) {
+				dataInput = dataInput + " " + inputs[i];
+			}
+		getSongs();
 	break;
 	case "movie-this":
-	for (i = 2; i < inputs.length; i++) {
-	dataInput = dataInput + " " + inputs[i];
-	}
-	getMovies();
+			for (i = 2; i < inputs.length; i++) {
+			dataInput = dataInput + " " + inputs[i];
+			}
+		getMovies();
 	break;
 	case "do-what-it-says":
+		doFun();
 	break;
 	}
 
@@ -91,11 +88,8 @@ var dataInput = inputs[1];
 
 	function getMovies() {
 
-
-// Then run a request to the OMDB API with the movie specified
 request("http://www.omdbapi.com/?t=" + dataInput + "&y=&plot=short&apikey=40e9cece", function(error, response, body) {
 
-    // If the request is successful (i.e. if the response status code is 200)
     if (!error && response.statusCode === 200) {
 
      if (!dataInput) {
@@ -112,46 +106,26 @@ request("http://www.omdbapi.com/?t=" + dataInput + "&y=&plot=short&apikey=40e9ce
         console.log("Plot: " + JSON.parse(body).Plot);
         console.log("Actors: " + JSON.parse(body).Actors);
 
-
-
     }
 });
 
-// request('http://www.omdbapi.com/?t='+dataInput+'&y=&plot=short&tomatoes=true&r=json', function (error, response, body) {
-//                 // if there is no error and a status of 200
-//                 if (!error && response.statusCode == 200) {
-//                     // convert the result string to actionable JSON
-//                     body = JSON.parse(body);
-//                     // console log the specific results that we want
-//                     // Title
-//                     console.log('Title: '+body.Title);
-//                     // Year
-//                     console.log('Year: '+body.Year);
-//                     // IMDB Rating
-//                     console.log('IMDB Rating: '+body.imdbRating);
-//                     // Country
-//                     console.log('Country: '+body.Country);
-//                     // Language
-//                     console.log('Language: '+body.Language);
-//                     // Plot
-//                     console.log('Short Plot: '+body.Plot);
-//                     // Actors
-//                     console.log('Actors: '+body.Actors);
-//                     // Rotten Tomatoes Rating
-//                     console.log('Rotten Tomatoes Rating: '+body.tomatoUserRating);
-//                     // Rotton Tomatoes UrL
-//                     console.log('Rotton Tomatoes URL: '+body.tomatoURL);
-//                 // if there is an error
-//                 } else {
-//                     // tell the user the error
-//                     console.log('Error: '+error);
-//                 }
-//             })
-
-
-
-
-
-
 	};
             
+
+     function doFun() {
+ 			fs.readFile("random.txt", 'utf8', function(error, text) {
+                if (error) {
+                    console.log(error);
+                    return;
+                }
+                var split = text.split(",");
+                roleInput = split[0];
+                dataInput = split[1];
+                getSongs();
+            });
+    };
+
+
+
+
+     
